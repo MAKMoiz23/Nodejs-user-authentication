@@ -39,8 +39,11 @@ app.use(passport.session());
 // Routes
 app.use('/login', login)
 app.use('/register', register)
-app.get('/dashboard', (req, res)=>{
-    res.render('dashboard')
+app.get('/dashboard', (req, res, next)=>{
+  passport.authenticate('local', {
+    successRedirect: '/dashboard',
+    failureRedirect: '/login'
+  })(req, res, next);
 })
 
 mongoose.connect(CONNECTION_URL,{useNewUrlParser: true, useUnifiedTopology: true})
